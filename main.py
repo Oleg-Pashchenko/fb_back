@@ -16,18 +16,17 @@ def main():
             group = db.select_group_by_id(task.group_id)
             content = db.select_content_by_id(task.content_id)
             image = content.image_id
-            image_obj = s3.get_object_from_s3(image)
-            s3.copy_image_to_clipboard(image_obj)
+            image_name = s3.get_object_from_s3(image)
             fb = Facebook(email=account.login, password=account.password)
             try:
                 fb.execute(group_url=group.link, text=content.text)
-                db.set_task_status(task.id, "Выполнена")
+                # db.set_task_status(task.id, "Выполнена")
             except (FacebookAuthError, FacebookZeroSubscription, FacebookSubscribeError, Exception) as e:
                 if isinstance(e, FacebookAuthError):
                     db.mark_bad_account(account.id)
                 if isinstance(e, Exception):
                     e = 'Неизвестная ошибка'
-                db.set_task_status(task.id, str(e))
+                # db.set_task_status(task.id, str(e))
             finally:
                 fb.close()
 

@@ -22,6 +22,7 @@ class Facebook:
 
     def login(self):
         self.chrome.get('https://www.facebook.com/')
+        time.sleep(100)
         self.chrome.find_element(By.ID, 'email').send_keys(self.email)
         self.chrome.find_element(By.ID, 'pass').send_keys(self.password)
         self.chrome.find_element(By.ID, 'loginbutton').click()
