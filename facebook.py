@@ -22,7 +22,11 @@ class Facebook:
 
     def login(self):
         self.chrome.get('https://www.facebook.com/')
-        time.sleep(100)
+        time.sleep(5)
+        try:
+            self.chrome.find_element(By.CSS_SELECTOR, 'div[aria-label="Allow all cookies"]').click()
+        except:
+            pass
         self.chrome.find_element(By.ID, 'email').send_keys(self.email)
         self.chrome.find_element(By.ID, 'pass').send_keys(self.password)
         self.chrome.find_element(By.ID, 'loginbutton').click()

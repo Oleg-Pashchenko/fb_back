@@ -17,6 +17,7 @@ def main():
             content = db.select_content_by_id(task.content_id)
             image = content.image_id
             image_name = s3.get_object_from_s3(image)
+            print(image_name)
             fb = Facebook(email=account.login, password=account.password)
             try:
                 fb.execute(group_url=group.link, text=content.text)
