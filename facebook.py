@@ -24,7 +24,7 @@ class Facebook:
         self.chrome.get('https://www.facebook.com/')
         time.sleep(5)
         try:
-            self.chrome.find_element(By.CSS_SELECTOR, 'div[aria-label="Allow all cookies"]').click()
+            self.chrome.find_element(By.CSS_SELECTOR, 'div[@aria-label="Allow all cookies"]').click()
         except:
             pass
         self.chrome.find_element(By.ID, 'email').send_keys(self.email)
