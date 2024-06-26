@@ -36,13 +36,3 @@ def get_object_from_s3(object_name):
         print(f"Error: {e}")
         return None
 
-
-# Пример использования функции
-object_url = 'https://s3.timeweb.cloud/931dbb93-olegpash/Снимок экрана 2024-06-24 в 16.30.14.png'
-object_name = object_url.split('/')[-1]
-
-image_data = get_object_from_s3(object_name)
-if image_data:
-    copy_image_to_clipboard(image_data)
-else:
-    print("Failed to retrieve object data.")
