@@ -23,10 +23,13 @@ class Facebook:
     def login(self):
         self.chrome.get('https://www.facebook.com/')
         time.sleep(5)
-        try:
-            self.chrome.find_element(By.CSS_SELECTOR, 'div[@aria-label="Allow all cookies"]').click()
-        except:
-            pass
+
+        elements = self.chrome.find_elements(By.XPATH, '//span[text()="Allow all cookies"]')
+        for element in elements:
+            try:
+                element.click()
+            except:
+                pass
         self.chrome.find_element(By.ID, 'email').send_keys(self.email)
         self.chrome.find_element(By.ID, 'pass').send_keys(self.password)
         self.chrome.find_element(By.ID, 'loginbutton').click()
@@ -57,7 +60,7 @@ class Facebook:
         except:
             raise FacebookSubscribeError("Произошла ошибка при попытке подписаться на группу!")
 
-    def create_post(self, text: str):
+    def create_post(self, text: str, filename: str):
         span = self.chrome.find_element(By.XPATH, "//span[text()='Write something...']")
         span.click()
         time.sleep(1)
@@ -65,12 +68,13 @@ class Facebook:
         time.sleep(1)
         span.send_keys(text)
         time.sleep(1)
-        span.send_keys(Keys.CONTROL, 'v')
-        time.sleep(2)
+        # span.send_keys(Keys.CONTROL, 'v')
+
+        time.sleep(3)
         self.chrome.find_element(By.XPATH, "//div[@aria-label='Post']").click()
         time.sleep(5)
 
-    def execute(self, group_url: str, text: str):
+    def execute(self, group_url: str, text: str, filename: str):
         self.login()
 
         if not self.is_logged_in():
@@ -85,7 +89,7 @@ class Facebook:
         if not self.is_has_subscription():
             raise FacebookZeroSubscription("Отсутствует подписка на группу!")
 
-        self.create_post(text)
+        self.create_post(text, filename)
     def close(self):
         self.chrome.quit()
 

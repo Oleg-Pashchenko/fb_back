@@ -20,18 +20,16 @@ def main():
             print(image_name)
             fb = Facebook(email=account.login, password=account.password)
             try:
-                fb.execute(group_url=group.link, text=content.text)
-                # db.set_task_status(task.id, "Выполнена")
+                fb.execute(group_url=group.link, text=content.text, filename=image_name)
+                db.set_task_status(task.id, "Выполнена")
             except (FacebookAuthError, FacebookZeroSubscription, FacebookSubscribeError, Exception) as e:
                 if isinstance(e, FacebookAuthError):
                     db.mark_bad_account(account.id)
                 if isinstance(e, Exception):
                     e = 'Неизвестная ошибка'
-                # db.set_task_status(task.id, str(e))
+                db.set_task_status(task.id, str(e))
             finally:
                 fb.close()
-
-            exit(0)
 
 
 
