@@ -3,8 +3,7 @@ import boto3
 import dotenv
 from PIL import Image
 from io import BytesIO
-import win32clipboard
-
+import io
 
 dotenv.load_dotenv()
 
@@ -37,19 +36,9 @@ def get_object_from_s3(object_name):
         return None
 
 def copy_image_to_clipboard(image_path):
-    # Open the image file
-    image = Image.open(image_path)
+    command = f"powershell Set-Clipboard -LiteralPath {image_path}"
+    os.system(command)
 
-    # Convert the image to a format suitable for the clipboard
-    output = io.BytesIO()
-    image.convert("RGB").save(output, "BMP")
-    data = output.getvalue()[14:]  # BMP files start with a 14-byte header
-
-    # Open the clipboard and set the image data
-    win32clipboard.OpenClipboard()
-    win32clipboard.EmptyClipboard()
-    win32clipboard.SetClipboardData(win32clipboard.CF_DIB, data)
-    win32clipboard.CloseClipboard()
 # Пример использования функции
 object_url = 'https://s3.timeweb.cloud/931dbb93-olegpash/Снимок экрана 2024-06-24 в 16.30.14.png'
 object_name = object_url.split('/')[-1]
